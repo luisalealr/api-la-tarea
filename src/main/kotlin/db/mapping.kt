@@ -10,7 +10,7 @@ import org.jetbrains.exposed.sql.Transaction
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 
 object UserTable : IdTable<String>("user") {
-    override val id = varchar("id", 50).entityId() // el UID de Firebase
+    override val id = varchar("id", 128).entityId() // el UID de Firebase
     val name = varchar("name", 100)
     val email = varchar("email", 100)
     val photo = varchar("photo", 200).nullable()
@@ -28,6 +28,7 @@ suspend fun <T> suspendTransaction(block: Transaction.() -> T): T =
     newSuspendedTransaction(Dispatchers.IO, statement = block)
 
 fun daoToModel(dao: UserDAO) = User(
+    dao.id.value,
     dao.name,
     dao.email,
     dao.photo
