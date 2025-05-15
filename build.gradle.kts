@@ -12,8 +12,14 @@ application {
     mainClass = "io.ktor.server.netty.EngineMain"
 }
 
+tasks.withType<Jar> {
+    from(sourceSets.main.get().resources)
+}
+
+
 repositories {
     mavenCentral()
+    google()
 }
 
 dependencies {
@@ -30,8 +36,14 @@ dependencies {
     implementation(libs.logback.classic)
     implementation(libs.ktor.server.config.yaml)
     implementation(libs.exposed.dao)
+
+    // integar postgres
     implementation("org.postgresql:postgresql:42.7.3")
     implementation("com.zaxxer:HikariCP:5.1.0")
+
+    // integrar firebase
+    implementation("com.google.firebase:firebase-admin:9.2.0")
+
 
     testImplementation(libs.ktor.server.test.host)
     testImplementation(libs.kotlin.test.junit)

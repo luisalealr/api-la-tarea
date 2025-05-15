@@ -5,6 +5,6 @@ ktor:
     deployment:
         port: 8080
 postgres:
-  url: "postgresql://postgres:HsoPQmEabpheZicgvKELDiJrXUCkireJ@trolley.proxy.rlwy.net:10975/laTarea"
-  user: "postgres"
-  password: "HsoPQmEabpheZicgvKELDiJrXUCkireJ"
+  url: ""
+  user: ""
+  password: ""
