@@ -36,6 +36,8 @@ dependencies {
     implementation(libs.logback.classic)
     implementation(libs.ktor.server.config.yaml)
     implementation(libs.exposed.dao)
+    implementation(libs.exposed.date)
+    implementation(libs.exposed.java.time)
 
     // integar postgres
     implementation("org.postgresql:postgresql:42.7.3")

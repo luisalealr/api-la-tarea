@@ -1,5 +1,9 @@
 package com.example
 
+import com.example.routes.authRoutes
+import com.example.routes.subjectRoutes
+import com.example.routes.taskRoutes
+import com.example.routes.usersRoutes
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
@@ -25,5 +29,9 @@ fun Application.configureRouting() {
         }
         // Static plugin. Try to access `/static/index.html`
         staticResources("/static", "static")
+        authRoutes()
+        usersRoutes()
+        taskRoutes()
+        subjectRoutes()
     }
 }

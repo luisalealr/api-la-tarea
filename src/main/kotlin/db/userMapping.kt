@@ -1,15 +1,12 @@
 package com.example.db
 
 import com.example.model.User
-import kotlinx.coroutines.Dispatchers
 import org.jetbrains.exposed.dao.Entity
 import org.jetbrains.exposed.dao.EntityClass
 import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.dao.id.IdTable
-import org.jetbrains.exposed.sql.Transaction
-import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 
-object UserTable : IdTable<String>("user") {
+object UserTable : IdTable<String>("User") {
     override val id = varchar("id", 128).entityId() // el UID de Firebase
     val name = varchar("name", 100)
     val email = varchar("email", 100)
@@ -23,9 +20,6 @@ class UserDAO(id: EntityID<String>) : Entity<String>(id) {
     var email by UserTable.email
     var photo by UserTable.photo
 }
-
-suspend fun <T> suspendTransaction(block: Transaction.() -> T): T =
-    newSuspendedTransaction(Dispatchers.IO, statement = block)
 
 fun daoToModel(dao: UserDAO) = User(
     dao.id.value,

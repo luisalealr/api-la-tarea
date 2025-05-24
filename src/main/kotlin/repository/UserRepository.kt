@@ -7,4 +7,5 @@ interface UserRepository {
     suspend fun userById(id: String): User?
     suspend fun createUser(user: User)
     suspend fun deleteUser(id: String): Boolean
+    suspend fun registerUserFromFirebase(token: String, name: String)
 }

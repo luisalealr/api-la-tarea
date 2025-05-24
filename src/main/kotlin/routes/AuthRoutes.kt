@@ -26,7 +26,7 @@ fun Route.authRoutes(userService: UserService = UserService()) {
             photo = decodedToken.picture
         )
 
-        userService.createUser(user)
+        userService.registerUserFromFirebase(request.token, request.name)
         call.respond(HttpStatusCode.Created, mapOf("message" to "Usuario registrado correctamente"))
     }
 }

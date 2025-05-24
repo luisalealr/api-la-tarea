@@ -3,7 +3,7 @@ package com.example.service
 import com.example.db.UserDAO
 import com.example.db.UserTable
 import com.example.db.daoToModel
-import com.example.db.suspendTransaction
+import com.example.db.utils.suspendTransaction
 import com.example.model.User
 import com.example.repository.UserRepository
 import com.google.firebase.auth.FirebaseAuth
@@ -35,13 +35,13 @@ class UserService: UserRepository {
     }
 
     override suspend fun deleteUser(id: String): Boolean = suspendTransaction{
-        val rowsDelated = UserTable.deleteWhere{
+        val rowsDeleted = UserTable.deleteWhere{
             UserTable.id eq id
         }
-        rowsDelated == 1
+        rowsDeleted == 1
     }
 
-    suspend fun registerUserFromFirebase(token: String, name: String){
+    override suspend fun registerUserFromFirebase(token: String, name: String){
         val decodedToken: FirebaseToken = FirebaseAuth.getInstance().verifyIdToken(token)
         val uid = decodedToken.uid
         val email = decodedToken.email ?: "sin_email"
