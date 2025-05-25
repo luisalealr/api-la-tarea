@@ -26,3 +26,13 @@ data class TaskResponse(
     val userId: String?= null,
     val subjectId: Int? = null
 )
+
+@Serializable
+data class TaskUpdate(
+    val title: String,
+    val description: String,
+    val expiresAt: String? = null,
+    val colorHexa: String? = null,
+    val priority: Int? = null,
+    val subjectId: Int? = null
+)

@@ -8,6 +8,7 @@ import com.example.db.taskResponseDao
 import com.example.db.utils.suspendTransaction
 import com.example.model.TaskRequest
 import com.example.model.TaskResponse
+import com.example.model.TaskUpdate
 import com.example.repository.TaskRepository
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.deleteWhere
@@ -44,7 +45,7 @@ class TaskService : TaskRepository {
         }
     }
 
-    override suspend fun updateTask(id: Int, task: TaskRequest): Unit = suspendTransaction  {
+    override suspend fun updateTask(id: Int, task: TaskUpdate): Unit = suspendTransaction  {
         val taskToUpdate = TaskDAO.findById(id)
             ?: throw IllegalArgumentException("No se encontró la tarea con id $id")
         val subjectDAO = task.subjectId?.let { SubjectDAO.findById(it) }
