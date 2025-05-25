@@ -71,8 +71,12 @@ fun Route.taskRoutes( taskService: TaskService = TaskService()){
             } else{
                 call.respond(HttpStatusCode.NotFound, "Tarea no encontrada")
             }
+        }
 
-
+        get("/list/{idUser}") {
+            val idParam = call.parameters["idUser"]
+            val subjectsByUser = taskService.findTasksByUser(idParam )
+            call.respond(HttpStatusCode.Found, subjectsByUser)
         }
 
     }

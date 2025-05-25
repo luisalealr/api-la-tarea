@@ -66,4 +66,10 @@ class TaskService : TaskRepository {
         rowsDeleted == 1
     }
 
+    override suspend fun findTasksByUser(id: String?): List<TaskResponse> = suspendTransaction {
+        TaskDAO
+            .find { (TaskTable.userId eq id) }
+            .map(:: taskResponseDao)
+    }
+
 }

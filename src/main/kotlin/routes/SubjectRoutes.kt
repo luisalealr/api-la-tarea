@@ -51,8 +51,6 @@ fun Route.subjectRoutes( subjectService: SubjectService = SubjectService()){
             } else{
                 call.respond(HttpStatusCode.NotFound, "Materia no encontrada")
             }
-
-
         }
     }
 }

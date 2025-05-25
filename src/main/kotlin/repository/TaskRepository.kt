@@ -10,4 +10,5 @@ interface TaskRepository {
     suspend fun createTask(task: TaskRequest)
     suspend fun updateTask(id: Int, task: TaskUpdate)
     suspend fun deleteTask(id: Int): Boolean
+    suspend fun findTasksByUser(id: String?): List<TaskResponse>
 }
