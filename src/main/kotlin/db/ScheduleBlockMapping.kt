@@ -1,6 +1,6 @@
 package com.example.db
 
-import com.example.model.ScheduleBlock
+import com.example.model.ScheduleBlockResponse
 import org.jetbrains.exposed.dao.IntEntity
 import org.jetbrains.exposed.dao.IntEntityClass
 import org.jetbrains.exposed.dao.id.EntityID
@@ -19,7 +19,7 @@ class ScheduleDAO (id : EntityID<Int>): IntEntity(id) {
     var finishHour by ScheduleTable.finishHour
 }
 
-fun daoToModel(dao : ScheduleDAO) = ScheduleBlock (
+fun scheduleDao(dao : ScheduleDAO) = ScheduleBlockResponse (
     dao.id.value,
     dao.day,
     dao.startHour,

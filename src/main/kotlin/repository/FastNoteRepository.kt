@@ -1,11 +1,12 @@
 package com.example.repository
 
-import com.example.model.FastNote
+import com.example.model.FastNoteRequest
+import com.example.model.FastNoteResponse
 
 interface FastNoteRepository {
-    suspend fun getAllNotes() : List<FastNote>
-    suspend fun noteById(id: Int): FastNote?
-    suspend fun createNote(note: FastNote)
-    suspend fun updateNote(id: Int, note: FastNote)
+    suspend fun getAllNotes() : List<FastNoteResponse>
+    suspend fun noteById(id: Int): FastNoteResponse?
+    suspend fun createNote(note: FastNoteRequest)
     suspend fun deleteNote(id: Int): Boolean
+    suspend fun getNotesByUser(id: String?): List<FastNoteResponse>
 }

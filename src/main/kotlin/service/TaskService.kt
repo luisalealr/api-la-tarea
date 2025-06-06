@@ -67,9 +67,11 @@ class TaskService : TaskRepository {
     }
 
     override suspend fun findTasksByUser(id: String?): List<TaskResponse> = suspendTransaction {
+        requireNotNull(id) { "El id del usuario no puede ser nulo" }
+
         TaskDAO
-            .find { (TaskTable.userId eq id) }
-            .map(:: taskResponseDao)
+            .find { TaskTable.userId eq id }
+            .map(::taskResponseDao)
     }
 
 }

@@ -9,6 +9,7 @@ import io.ktor.http.HttpStatusCode
 import io.ktor.server.request.receive
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
+import io.ktor.server.routing.delete
 import io.ktor.server.routing.get
 import io.ktor.server.routing.post
 import io.ktor.server.routing.put
@@ -31,7 +32,16 @@ fun Route.taskRoutes( taskService: TaskService = TaskService()){
         }
 
         get("/list"){
-            val tasks = taskService.getAllTask()
+            val authHeader = call.request.headers["Authorization"]
+                ?: return@get call.respond(HttpStatusCode.Unauthorized)
+
+            val token = authHeader.removePrefix("Bearer ").trim()
+            val firebaseToken = verifyFirebaseToken(token)
+                ?: return@get call.respond(HttpStatusCode.Unauthorized)
+
+            val userId = firebaseToken.uid
+
+            val tasks = taskService.findTasksByUser(userId)
             call.respond(tasks)
         }
 
@@ -78,6 +88,25 @@ fun Route.taskRoutes( taskService: TaskService = TaskService()){
             val subjectsByUser = taskService.findTasksByUser(idParam )
             call.respond(HttpStatusCode.Found, subjectsByUser)
         }
+
+        delete("/{id}") {
+            val idParam = call.parameters["id"]
+            val id = idParam?.toIntOrNull()
+
+            if (id == null) {
+                call.respond(HttpStatusCode.BadRequest, "ID no proporcionado")
+                return@delete
+            }
+
+            val deleted = taskService.deleteTask(id)
+
+            if (deleted) {
+                call.respond(HttpStatusCode.OK, "Tarea eliminada exitosamente")
+            } else {
+                call.respond(HttpStatusCode.NotFound, "Tarea no encontrada")
+            }
+        }
+
 
     }
 }

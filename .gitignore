@@ -8,6 +8,9 @@ build/
 # eliminar el archivo .json
 src/main/resources/serviceAccountKey.json
 
+application.yaml
+
+
 ### STS ###
 .apt_generated
 .classpath

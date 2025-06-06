@@ -1,6 +1,7 @@
 package com.example
 
 import com.example.routes.authRoutes
+import com.example.routes.fastNoteRoutes
 import com.example.routes.subjectRoutes
 import com.example.routes.taskRoutes
 import com.example.routes.usersRoutes
@@ -33,5 +34,6 @@ fun Application.configureRouting() {
         usersRoutes()
         taskRoutes()
         subjectRoutes()
+        fastNoteRoutes()
     }
 }

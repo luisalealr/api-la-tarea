@@ -1,14 +1,18 @@
 package com.example.model
 
-import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
-import java.time.LocalDate
 
 @Serializable
-data class FastNote (
+data class FastNoteResponse (
     val id: Int,
     val title: String,
     val description: String,
-    @Contextual val createdAt: LocalDate,
-    val userId : String?,
+    val userId : String? = null,
+)
+
+@Serializable
+data class FastNoteRequest (
+    val title: String,
+    val description: String,
+    val userId : String? = null,
 )

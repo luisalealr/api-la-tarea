@@ -7,18 +7,28 @@ import io.ktor.http.HttpStatusCode
 import io.ktor.server.request.receive
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
+import io.ktor.server.routing.delete
 import io.ktor.server.routing.get
 import io.ktor.server.routing.post
 import io.ktor.server.routing.put
 import io.ktor.server.routing.route
+import kotlin.text.toIntOrNull
 
 fun Route.subjectRoutes( subjectService: SubjectService = SubjectService()){
     route("/api/subject") {
 
-        get("/list/{idUser}") {
-            val idParam = call.parameters["idUser"]
-            val subjectsByUser = subjectService.findSubjectByUser(idParam )
-            call.respond(HttpStatusCode.Found, subjectsByUser)
+        get("/list") {
+            val authHeader = call.request.headers["Authorization"]
+                ?: return@get call.respond(HttpStatusCode.Unauthorized)
+
+            val token = authHeader.removePrefix("Bearer ").trim()
+            val firebaseToken = verifyFirebaseToken(token)
+                ?: return@get call.respond(HttpStatusCode.Unauthorized)
+
+            val userId = firebaseToken.uid
+
+            val subjects = subjectService.findSubjectByUser(userId)
+            call.respond(subjects)
         }
 
         post("/create") {
@@ -49,6 +59,24 @@ fun Route.subjectRoutes( subjectService: SubjectService = SubjectService()){
                 subjectService.updateSubject(id, subjectUpdated)
                 call.respond(HttpStatusCode.OK, "Ha sido actualizada la materia")
             } else{
+                call.respond(HttpStatusCode.NotFound, "Materia no encontrada")
+            }
+        }
+
+        delete("/{id}") {
+            val idParam = call.parameters["id"]
+            val id = idParam?.toIntOrNull()
+
+            if (id == null) {
+                call.respond(HttpStatusCode.BadRequest, "ID no proporcionado")
+                return@delete
+            }
+
+            val deleted = subjectService.deleteSubject(id)
+
+            if (deleted) {
+                call.respond(HttpStatusCode.OK, "Materia eliminada exitosamente")
+            } else {
                 call.respond(HttpStatusCode.NotFound, "Materia no encontrada")
             }
         }
